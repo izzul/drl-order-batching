@@ -1,0 +1,36 @@
+simulation:
+  batching_opt: 1
+  routing_opt: 1
+  picker_number: 2
+  cart_capacity: 100
+
+environment:
+  observation_space: 14
+  action_space: 2
+  t_start: 0
+  logs:
+    - infeasible_ratio
+    - tardy_order
+    - avg_completion_time
+    - avg_turn_over_time
+    - episode_reward_hist
+  weights: [1, 1] # tardy orders, order picking costs
+
+main:
+    model: PPO2
+    policy: CustomMlpPolicy
+    normalize: false
+    n_workers: 1 # Parallel environments
+    n_steps: 10000000 # Steps to train
+    save_every: 5000000 # Save a checkpoint of the model every n steps
+
+    # Tensorboard logs for environment attributes e.g. self.steps
+    logs:
+        - steps
+        - episode_step
+        - infeasible_ratio
+        - processed_order
+        - tardy_order
+        - cart_utility
+        - picker_utility
+        - lateness

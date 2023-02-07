@@ -9,19 +9,18 @@ from drl_env import WAREHOUSE
 # Set batching heuristic
 heuristic = "BOC"
 
-# Initiate 4 simulation environments in parallel
-env = WAREHOUSE(params=(1, 1), heuristic=heuristic)
-env = make_vec_env(lambda: env, n_envs=4)
+env = WAREHOUSE(params=(1, 1))
+env = make_vec_env(lambda: env, n_envs=1)
 
-path = "trained_models/scenario_2/"
+path = "trained_models/scenario_tikno/"
 model = PPO2(MlpPolicy, env, verbose=0)
 
 # Mount initiated environment on the trained agent and set gamma value
 model.set_env(env)
-model.gamma = 0.999999
+model.gamma = 0.99
 
 # Train agent with 4M steps each and save
-version_number = 6
+version_number = 't1'
 model.learn(total_timesteps=100000)
-model.save(path+"V00"+str(version_number)+"_first_run")
+model.save(path+"V00"+version_number+"_first_run")
 
